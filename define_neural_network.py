@@ -1,10 +1,12 @@
 import numpy as np
 import torch
+from torch import nn
 
 import helper
 
 import matplotlib.pyplot as plt
 from torchvision import datasets, transforms
+from collections import OrderedDict
 
 from network import Network
 
@@ -43,7 +45,7 @@ print(model.fc1.bias)
 model.fc1.weight.data.normal_(std=0.1)
 print(model.fc1.weight)
 
-# Pass da on forward
+# Pass data forward thought the network and display output
 images, labels = next(iter(trainLoader))
 
 # Get batch size from tensor, which in this case is 64
@@ -59,3 +61,35 @@ ps = model.forward(images[0])
 # Call view here covert image back to original size,
 # is similar to resize, but return a tensor instead
 helper.view_classify(images[0].view(1, 28, 28), ps)
+
+# HyperParameters for network
+input_size = 784
+hidden_sizes = [128, 64]
+output_size = 10
+
+# Same as Network but with Sequential
+model = nn.Sequential(OrderedDict([
+    ('fc1', nn.Linear(input_size, hidden_sizes[0])),
+    ('relu1', nn.ReLU()),
+    ('fc2', nn.Linear(hidden_sizes[0], hidden_sizes[1])),
+    ('relu2', nn.ReLU()),
+    ('output', nn.Linear(hidden_sizes[1], output_size)),
+    ('softmax', nn.Softmax(dim=1))]))
+
+helper.pass_forward(trainLoader, model)
+
+## TODO: Your network here
+hidden_sizes = [400, 200, 100]
+output_size = 10
+
+model = nn.Sequential(OrderedDict([
+    ('fc1', nn.Linear(input_size, hidden_sizes[0])),
+    ('relu1', nn.ReLU()),
+    ('fc2', nn.Linear(hidden_sizes[0], hidden_sizes[1])),
+    ('relu2', nn.ReLU()),
+    ('fc3', nn.Linear(hidden_sizes[1], hidden_sizes[2])),
+    ('relu3', nn.ReLU()),
+    ('output', nn.Linear(hidden_sizes[2], output_size)),
+    ('softmax', nn.Softmax(dim=1))]))
+
+helper.pass_forward(trainLoader, model)
