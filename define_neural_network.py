@@ -18,15 +18,15 @@ transform = transforms.Compose([transforms.ToTensor(),
                                 ])
 
 # Download and load the training data
-trainSet = datasets.MNIST('MNIST_data/', download=True, train=True, transform=transform)
-trainLoader = torch.utils.data.DataLoader(trainSet, batch_size=64, shuffle=True)
+train_set = datasets.MNIST('MNIST_data/', download=True, train=True, transform=transform)
+train_loader = torch.utils.data.DataLoader(train_set, batch_size=64, shuffle=True)
 
 # Download and load the test data
-testSet = datasets.MNIST('MNIST_data/', download=True, train=False, transform=transform)
-testLoader = torch.utils.data.DataLoader(testSet, batch_size=64, shuffle=True)
+test_set = datasets.MNIST('MNIST_data/', download=True, train=False, transform=transform)
+test_loader = torch.utils.data.DataLoader(test_set, batch_size=64, shuffle=True)
 
-dataIter = iter(trainLoader)
-images, labels = dataIter.next()
+data_iter = iter(train_loader)
+images, labels = data_iter.next()
 
 plt.imshow(images[1].numpy().squeeze(), cmap='Greys_r')
 
@@ -46,7 +46,7 @@ model.fc1.weight.data.normal_(std=0.1)
 print(model.fc1.weight)
 
 # Pass data forward thought the network and display output
-images, labels = next(iter(trainLoader))
+images, labels = next(iter(train_loader))
 
 # Get batch size from tensor, which in this case is 64
 # 784 is the 28*28 correspondent to img width and height
@@ -76,7 +76,7 @@ model = nn.Sequential(OrderedDict([
     ('output', nn.Linear(hidden_sizes[1], output_size)),
     ('softmax', nn.Softmax(dim=1))]))
 
-helper.pass_forward(trainLoader, model)
+helper.pass_forward(train_loader, model)
 
 ## TODO: Your network here
 hidden_sizes = [400, 200, 100]
@@ -92,4 +92,4 @@ model = nn.Sequential(OrderedDict([
     ('output', nn.Linear(hidden_sizes[2], output_size)),
     ('softmax', nn.Softmax(dim=1))]))
 
-helper.pass_forward(trainLoader, model)
+helper.pass_forward(train_loader, model)
