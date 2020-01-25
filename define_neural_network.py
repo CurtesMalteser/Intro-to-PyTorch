@@ -93,3 +93,11 @@ model = nn.Sequential(OrderedDict([
     ('softmax', nn.Softmax(dim=1))]))
 
 helper.pass_forward(train_loader, model)
+
+data_transform = transforms.Compose([transforms.Resize(255),
+                                 transforms.CenterCrop(224),
+                                 transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+                                 transforms.RandomRotation(30),
+                                 transforms.RandomResizedCrop(100),
+                                 transforms.RandomHorizontalFlip(),
+                                 transforms.ToTensor()])
